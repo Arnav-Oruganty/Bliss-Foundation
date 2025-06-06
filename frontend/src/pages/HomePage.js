@@ -84,7 +84,12 @@ export default function HomePage() {
       {/* Main Container for Cards and Dashboard */}
       <Box sx={{ maxWidth: "1200px", mx: "auto", px: 2 }}>
         {/* Info Cards Section */}
-        <Grid container spacing={4}>
+        <Grid 
+          container 
+          spacing={4}
+          justifyContent="center"
+          alignItems="stretch"
+        >
           <Grid item xs={12} md={6}>
             <Link to="/adopt" style={{ textDecoration: "none", display: "block", height: "100%" }}>
               <Card
