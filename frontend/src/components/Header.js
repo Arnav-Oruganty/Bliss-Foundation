@@ -98,9 +98,14 @@ export default function Header({ onSignOut }) {
                     to={item.to}
                     key={item.label}
                     onClick={() => setDrawerOpen(false)}
+                    sx={{
+                      color: "#6B7280",
+                      "& .MuiSvgIcon-root": { color: "#6B7280" },
+                      textDecoration: "none",
+                    }}
                   >
                     {item.icon}
-                    <ListItemText primary={item.label} sx={{ ml: 1 }} />
+                    <ListItemText primary={item.label} sx={{ ml: 1, color: "#6B7280" }} />
                   </ListItem>
                 ))}
                 <ListItem button onClick={onSignOut}>
