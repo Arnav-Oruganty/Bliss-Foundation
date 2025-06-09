@@ -14,7 +14,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme, useMediaQuery } from "@mui/material";
 import logo from "../assets/logo.jpeg";
 
@@ -25,12 +25,18 @@ export default function Header({ onSignOut }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navLinks = [
     { label: "About", icon: <InfoIcon />, to: "/about" },
     { label: "Adopt", icon: <FavoriteIcon />, to: "/adopt" },
     { label: "Donate", icon: <VolunteerActivismIcon />, to: "/donate" },
   ];
+
+  const handleSignOut = () => {
+    if (onSignOut) onSignOut();
+    navigate("/signin");
+  };
 
   return (
     <Box
@@ -108,7 +114,7 @@ export default function Header({ onSignOut }) {
                     <ListItemText primary={item.label} sx={{ ml: 1, color: "#6B7280" }} />
                   </ListItem>
                 ))}
-                <ListItem button onClick={onSignOut}>
+                <ListItem button onClick={handleSignOut}>
                   <LogoutIcon color="error" />
                   <ListItemText
                     primary="Sign Out"
@@ -147,7 +153,7 @@ export default function Header({ onSignOut }) {
             variant="contained"
             color="error"
             startIcon={<LogoutIcon />}
-            onClick={onSignOut}
+            onClick={handleSignOut}
             sx={{
               ml: 2,
               borderRadius: "9999px",
