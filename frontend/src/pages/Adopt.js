@@ -4,6 +4,8 @@ import AnimalCard from "../components/AnimalCard";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
+const BACKEND_URL = "https://bliss-foundation-3w6f.vercel.app";
+
 export default function Adopt() {
 	const [animals, setAnimals] = useState([]);
 
@@ -48,8 +50,12 @@ export default function Adopt() {
 					{animals.map((animal) => (
 						<Grid item key={animal._id} xs={12} sm={6} md={4}>
 							<AnimalCard
-								photo={animal.imageUrl}
-								type={animal.type}
+								photo={
+									animal.imageUrl
+										? `${BACKEND_URL}${animal.imageUrl}`
+										: "https://via.placeholder.com/320x180?text=No+Image"
+								}
+								type={animal.type || animal.species}
 								name={animal.name}
 								location={animal.location}
 								breed={animal.breed}
