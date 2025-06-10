@@ -1,38 +1,46 @@
-require('dotenv').config()
+require('dotenv').config();
 
-const express = require('express')
-const mongoose = require('mongoose')
-const animalRoutes = require('./routes/animals')
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const animalRoutes = require('./routes/animals');
+
+const PORT = process.env.PORT || 4000;
 
 // express app
-const app = express()
+const app = express();
+
+// Enable CORS
+app.use(cors({
+  origin: 'https://bliss-foundation.vercel.app', // your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // only needed if using cookies/auth headers
+}));
 
 // middleware
-app.use(express.json())
+app.use(express.json());
 
 app.use((req, res, next) => {
-  console.log(req.path, req.method)
-  next()
-})
+  console.log(req.path, req.method);
+  next();
+});
 
 app.use('/uploads', express.static('public/uploads'));
 
-app.get('/',(req,res)=>{
-    res.send('Bliss Foundation API is running!')
-})
+app.get('/', (req, res) => {
+  res.send('Bliss Foundation API is running!');
+});
 
 // routes
-app.use('/api/animals', animalRoutes)
+app.use('/api/animals', animalRoutes);
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    // listen for requests only after successful connection
-    app.listen(process.env.PORT,() => {
-        console.log('Connected to db and Server is running on port 4000!')
-    })
+    app.listen(PORT, () => {
+      console.log(`Connected to db and Server is running on port ${PORT}!`);
+    });
   })
   .catch((error) => {
-    console.error('Error connecting to the database:', error)
-  })
-
+    console.error('Error connecting to the database:', error);
+  });
