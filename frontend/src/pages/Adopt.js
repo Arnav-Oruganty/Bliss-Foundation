@@ -50,7 +50,7 @@ export default function Adopt() {
 							<AnimalCard
 								photo={
 									animal.imageUrl
-										? `${animal.imageUrl}`
+										? `https://bliss-foundation-3w6f.onrender.com${animal.imageUrl}`
 										: "https://via.placeholder.com/320x180?text=No+Image"
 								}
 								type={animal.type || animal.species}
