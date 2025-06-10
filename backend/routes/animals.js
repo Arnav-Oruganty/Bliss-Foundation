@@ -1,5 +1,5 @@
 const express = require('express')
-const upload = require('../upload') // Adjust path as needed
+const upload = require('../upload')
 const {
   createAnimal,
   getAnimals,

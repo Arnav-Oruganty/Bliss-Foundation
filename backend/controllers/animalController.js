@@ -27,29 +27,29 @@ const getAnimal = async (req, res) => {
 
 // create new animal
 const createAnimal = async (req, res) => {
-    const { name, species, age, location, healthStatus = 'Healthy' } = req.body
+  const { name, species, age, location, healthStatus = 'Healthy' } = req.body;
 
-    // Check if image was uploaded
-    if (!req.file) {
-        return res.status(400).json({ error: 'Image is required' });
-    }
+  if (!req.file) {
+    return res.status(400).json({ error: 'Image is required' });
+  }
 
-    const imageUrl = `/uploads/${req.file.filename}`
+  const imageUrl = req.file.path; // This is the Cloudinary URL
 
-    try {
-        const animal = await Animal.create({
-            name,
-            species,
-            age,
-            location,
-            healthStatus,
-            imageUrl
-        })
-        res.status(200).json(animal)
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
-}
+  try {
+    const animal = await Animal.create({
+      name,
+      species,
+      age,
+      location,
+      healthStatus,
+      imageUrl,
+    });
+
+    res.status(200).json(animal);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 // delete an animal
 const deleteAnimal = async (req, res) => {
