@@ -9,7 +9,7 @@ export default function Adopt() {
 
 	useEffect(() => {
 		const fetchAnimals = async () => {
-			const response = await fetch("https://bliss-foundation.onrender.com//api/animals");
+			const response = await fetch("https://bliss-foundation.onrender.com/api/animals");
 			const json = await response.json();
 			console.log("Fetched animals:", json); // ✅ Debug log
 
