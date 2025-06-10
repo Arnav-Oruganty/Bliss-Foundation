@@ -4,14 +4,12 @@ import AnimalCard from "../components/AnimalCard";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const BACKEND_URL = "https://bliss-foundation-3w6f.vercel.app";
-
 export default function Adopt() {
 	const [animals, setAnimals] = useState([]);
 
 	useEffect(() => {
 		const fetchAnimals = async () => {
-			const response = await fetch("https://bliss-foundation-3w6f.vercel.app/api/animals");
+			const response = await fetch("/api/animals");
 			const json = await response.json();
 
 			if (response.ok) {
@@ -52,7 +50,7 @@ export default function Adopt() {
 							<AnimalCard
 								photo={
 									animal.imageUrl
-										? `${BACKEND_URL}${animal.imageUrl}`
+										? `${animal.imageUrl}`
 										: "https://via.placeholder.com/320x180?text=No+Image"
 								}
 								type={animal.type || animal.species}
