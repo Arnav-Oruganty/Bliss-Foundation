@@ -17,9 +17,12 @@ app.use((req, res, next) => {
 
 app.use('/uploads', express.static('public/uploads'));
 
-app.get("/", (req, res) => {
-    res.send("Bliss Foundation API is running!");
-});
+app.get('/',(req,res)=>{
+    res.send({
+        activeStatus:true,
+        error:false,
+    })
+})
 
 // routes
 app.use('/api/animals', animalRoutes)
