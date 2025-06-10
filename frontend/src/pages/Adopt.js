@@ -1,50 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import AnimalCard from "../components/AnimalCard";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import animal1 from "../assets/animal1.jpeg";
-import animal2 from "../assets/animal2.jpg";
-
-const animals = [
-	{
-		photo: animal1,
-		type: "Dog",
-		name: "Buddy",
-		location: "Hyderabad",
-		breed: "Labrador",
-		age: "2 years",
-	},
-	{
-		photo: animal2,
-		type: "Cat",
-		name: "Misty",
-		location: "Secunderabad",
-		breed: "Persian",
-		age: "1 year",
-	},
-	{
-		photo: animal1,
-		type: "Dog",
-		name: "Rocky",
-		location: "Gachibowli",
-		breed: "Beagle",
-		age: "3 years",
-	},
-	{
-		photo: animal2,
-		type: "Cat",
-		name: "Luna",
-		location: "Madhapur",
-		breed: "Siamese",
-		age: "8 months",
-	},
-];
 
 export default function Adopt() {
-	const handleAdopt = (name) => {
-		alert(`Thank you for your interest in adopting ${name}!`);
-	};
+	const [animals, setAnimals] = useState([]);
+
+	useEffect(() => {
+		const fetchAnimals = async () => {
+			const response = await fetch("/api/animals");
+			const json = await response.json();
+
+			if (response.ok) {
+				setAnimals(json);
+			}
+		};
+
+		fetchAnimals();
+	}, []);
 
 	return (
 		<Box
@@ -71,11 +45,18 @@ export default function Adopt() {
 					Animals Available for Adoption
 				</Typography>
 				<Grid container spacing={4} justifyContent="center">
-					{animals.map((animal, idx) => (
-						<Grid item xs={12} sm={6} md={4} key={idx}>
+					{animals.map((animal) => (
+						<Grid item key={animal._id} xs={12} sm={6} md={4}>
 							<AnimalCard
-								{...animal}
-								onAdopt={() => handleAdopt(animal.name)}
+								photo={animal.imageUrl}
+								type={animal.type}
+								name={animal.name}
+								location={animal.location}
+								breed={animal.breed}
+								age={animal.age}
+								onAdopt={() =>
+									alert(`Thank you for choosing to adopt ${animal.name}!`)
+								}
 							/>
 						</Grid>
 					))}
