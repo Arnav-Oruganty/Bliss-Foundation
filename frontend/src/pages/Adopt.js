@@ -11,6 +11,7 @@ export default function Adopt() {
 		const fetchAnimals = async () => {
 			const response = await fetch("https://bliss-foundation-3w6f.onrender.com/api/animals");
 			const json = await response.json();
+			console.log("Fetched animals:", json); // ✅ Debug log
 
 			if (response.ok) {
 				setAnimals(json);
