@@ -31,6 +31,7 @@ const AnimalForm = ({ onAnimalAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form submitted"); // Debug log
 
     const data = new FormData();
     Object.entries(form).forEach(([key, value]) => data.append(key, value));
@@ -40,13 +41,13 @@ const AnimalForm = ({ onAnimalAdded }) => {
       method: "POST",
       body: data,
     });
+
     const json = await response.json();
 
     if (!response.ok) {
       setError(json.error || "Failed to add animal");
       setEmptyFields(json.emptyFields || []);
-    }
-    if (response.ok) {
+    } else {
       setEmptyFields([]);
       setError(null);
       setForm(initialState);
@@ -60,61 +61,77 @@ const AnimalForm = ({ onAnimalAdded }) => {
       <Typography variant="h6" sx={{ fontWeight: "bold", color: "#09bcd4", mb: 2 }}>
         Add New Animal
       </Typography>
+
       <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        <TextField 
-            label="Name" 
-            name="name" 
-            value={form.name} 
-            onChange={handleChange} 
-            required error={emptyFields.includes("name")} 
+        <TextField
+          label="Name"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          required
+          error={emptyFields.includes("name")}
         />
-        <TextField 
-            label="Species" 
-            name="species" 
-            value={form.species} 
-            onChange={handleChange} 
-            required error={emptyFields.includes("species")} 
+        <TextField
+          label="Species"
+          name="species"
+          value={form.species}
+          onChange={handleChange}
+          required
+          error={emptyFields.includes("species")}
         />
-        <TextField 
-            label="Age" 
-            name="age" 
-            type="number" 
-            value={form.age} 
-            onChange={handleChange} 
-            required 
-            inputProps={{ min: 0 }} 
-            error={emptyFields.includes("age")} />
-        <TextField 
-            select 
-            label="Health Status" 
-            name="healthStatus" 
-            value={form.healthStatus} 
-            onChange={handleChange} 
-            required error={emptyFields.includes("healthStatus")}
+        <TextField
+          label="Age"
+          name="age"
+          type="number"
+          value={form.age}
+          onChange={handleChange}
+          required
+          inputProps={{ min: 0 }}
+          error={emptyFields.includes("age")}
+        />
+        <TextField
+          select
+          label="Health Status"
+          name="healthStatus"
+          value={form.healthStatus}
+          onChange={handleChange}
+          required
+          error={emptyFields.includes("healthStatus")}
         >
-            {healthOptions.map((option) => (
-                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-            ))}
+          {healthOptions.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
         </TextField>
-        <TextField 
-            label="Location" 
-            name="location" 
-            value={form.location} 
-            onChange={handleChange} 
-            required error={emptyFields.includes("location")} 
+        <TextField
+          label="Location"
+          name="location"
+          value={form.location}
+          onChange={handleChange}
+          required
+          error={emptyFields.includes("location")}
         />
-        <Button 
-            variant="outlined" 
-            component="label"
-        >
+
+        {/* Upload Image Button */}
+        <label htmlFor="upload-button">
+          <Button variant="outlined" component="span">
             Upload Image
-            <input 
-                type="file" 
-                accept="image/*" 
-                hidden onChange={handleImageChange} 
-            />
-        </Button>
-        {imageFile && <Typography variant="body2">{imageFile.name}</Typography>}
+          </Button>
+        </label>
+        <input
+          id="upload-button"
+          type="file"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleImageChange}
+        />
+        {imageFile && (
+          <Typography variant="body2" sx={{ color: "#4B5563" }}>
+            {imageFile.name}
+          </Typography>
+        )}
+
         <Button
           type="submit"
           variant="contained"
