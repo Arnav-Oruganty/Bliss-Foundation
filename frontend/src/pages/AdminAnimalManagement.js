@@ -10,7 +10,7 @@ export default function AdminAnimalManagement() {
 
     useEffect(() => {
         const fetchAnimals = async () => {
-            const response = await fetch("/api/animals");
+            const response = await fetch("https://bliss-foundation.onrender.com/api/animals");
             const json = await response.json();
 
             if (response.ok) {
@@ -23,7 +23,7 @@ export default function AdminAnimalManagement() {
 
     // Refresh animals after adding a new one
     const handleAnimalAdded = () => {
-        fetch("/api/animals")
+        fetch("https://bliss-foundation.onrender.com/api/animals")
             .then((res) => res.json())
             .then((json) => setAnimals(json));
     };

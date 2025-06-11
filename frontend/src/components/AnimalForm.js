@@ -36,7 +36,7 @@ const AnimalForm = ({ onAnimalAdded }) => {
     Object.entries(form).forEach(([key, value]) => data.append(key, value));
     if (imageFile) data.append("image", imageFile);
 
-    const response = await fetch("/api/animals", {
+    const response = await fetch("https://bliss-foundation.onrender.com/api/animals", {
       method: "POST",
       body: data,
     });
