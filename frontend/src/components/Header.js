@@ -35,7 +35,7 @@ export default function Header({ onSignOut }) {
 
   const handleSignOut = () => {
     if (onSignOut) onSignOut();
-    navigate("/signin");
+    navigate("/login");
   };
 
   return (

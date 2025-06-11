@@ -1,6 +1,34 @@
 import { Box, Typography, TextField, Button, Paper } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function SignIn() {
+const navigate = useNavigate();
+
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch('https://bliss-foundation.onrender.com/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log('Login successful:', data);
+      navigate('/'); 
+    } else {
+      setError(data.message || 'Login failed');
+      console.error('Login error:', data);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -27,13 +55,15 @@ export default function SignIn() {
           <Typography sx={{ mb: 3, textAlign: "center" }}>
             Welcome back! Please sign in to continue.
           </Typography>
-          <form>
+          <form onSubmit={handleSubmit}>
             <TextField
               label="Email"
               type="email"
               fullWidth
               required
               sx={{ mb: 2 }}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               label="Password"
@@ -41,7 +71,14 @@ export default function SignIn() {
               fullWidth
               required
               sx={{ mb: 3 }}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
+            {error && (
+              <Typography color="error" sx={{ mb: 2 }}>
+                {error}
+              </Typography>
+            )}
             <Button
               type="submit"
               variant="contained"
