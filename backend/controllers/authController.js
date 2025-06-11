@@ -14,7 +14,7 @@ const getUsers = async (req, res) => {
 
 // Signup function
 const signUp = async (req,res) => {
-    const { name, email, password } = req.body
+    const { name, email, password, isAdmin } = req.body
 
     try {
         // Check if user already exists
@@ -30,7 +30,8 @@ const signUp = async (req,res) => {
         const user = await User.create({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            isAdmin: isAdmin || false
         })
         await user.save()
 
@@ -39,7 +40,8 @@ const signUp = async (req,res) => {
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                isAdmin: user.isAdmin
             }
         })
     } catch (error) {
@@ -80,7 +82,6 @@ const login = async (req, res) => {
                 isAdmin: user.isAdmin
             },
             token
-            isAdmin: user.isAdmin
         })
     } catch (error) {
         res.status(500).json({ error: error.message })
