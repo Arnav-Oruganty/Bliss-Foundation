@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 // routes
 app.use('/api/animals', animalRoutes);
 
-app.use('/api/v1/auth', authRoutes)
+app.use('/api/auth', authRoutes)
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
