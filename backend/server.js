@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const animalRoutes = require('./routes/animals');
+const authRoutes = require('./routes/auth');
 
 const PORT = process.env.PORT || 4000;
 
@@ -33,6 +34,8 @@ app.get('/', (req, res) => {
 
 // routes
 app.use('/api/animals', animalRoutes);
+
+app.use('/api/v1/auth', authRoutes)
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
