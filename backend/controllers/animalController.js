@@ -29,11 +29,8 @@ const getAnimal = async (req, res) => {
 const createAnimal = async (req, res) => {
   const { name, species, age, location, healthStatus = 'Healthy' } = req.body;
 
-  console.log('Received body:', req.body)
-  console.log('Received file:', req.file)
-
-  if (!req.file) {
-    return res.status(400).json({ error: 'Image is required' });
+  if (!name || !species || !age || !location || !req.file) {
+    return res.status(400).json({ error: 'All fields including image are required' });
   }
 
   try {
