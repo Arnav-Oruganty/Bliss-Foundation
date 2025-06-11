@@ -80,6 +80,7 @@ const login = async (req, res) => {
                 isAdmin: user.isAdmin
             },
             token
+            isAdmin: user.isAdmin
         })
     } catch (error) {
         res.status(500).json({ error: error.message })
