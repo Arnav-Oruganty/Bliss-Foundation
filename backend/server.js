@@ -26,8 +26,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/uploads', express.static('public/uploads'));
-
 app.get('/', (req, res) => {
   res.send('Bliss Foundation API is running!');
 });

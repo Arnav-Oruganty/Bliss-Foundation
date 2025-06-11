@@ -2,6 +2,16 @@ const User = require('../models/userModel')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+// get all signed up users
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password')
+        res.status(200).json(users)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
 // Signup function
 const signUp = async (req,res) => {
     const { name, email, password } = req.body
@@ -76,6 +86,7 @@ const login = async (req, res) => {
 }
 
 module.exports = {
+    getUsers,
     signUp,
     login
 }
