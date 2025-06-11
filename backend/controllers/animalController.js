@@ -33,8 +33,14 @@ const createAnimal = async (req, res) => {
     return res.status(400).json({ error: 'All fields including image are required' });
   }
 
+  console.log("BODY:", req.body);
+  console.log("FILE:", req.file);
+
   try {
     const imageUrl = req.file.path;
+    if (!imageUrl) {
+      throw new Error("Cloudinary upload failed: No image URL returned.");
+    }
 
     const animal = await Animal.create({
       name,
@@ -48,9 +54,10 @@ const createAnimal = async (req, res) => {
     res.status(200).json(animal);
   } catch (error) {
     console.error('Error during createAnimal:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 };
+
 
 
 // delete an animal
