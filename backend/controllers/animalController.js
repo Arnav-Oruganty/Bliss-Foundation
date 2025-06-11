@@ -29,13 +29,16 @@ const getAnimal = async (req, res) => {
 const createAnimal = async (req, res) => {
   const { name, species, age, location, healthStatus = 'Healthy' } = req.body;
 
+  console.log('Received body:', req.body)
+  console.log('Received file:', req.file)
+
   if (!req.file) {
     return res.status(400).json({ error: 'Image is required' });
   }
 
-  const imageUrl = req.file.path; // This is the Cloudinary URL
-
   try {
+    const imageUrl = req.file.path;
+
     const animal = await Animal.create({
       name,
       species,
@@ -47,10 +50,11 @@ const createAnimal = async (req, res) => {
 
     res.status(200).json(animal);
   } catch (error) {
-        console.error("Error creating animal:", error); // This will show full error in Render logs
-        res.status(500).json({ error: error.message || "Server error" });
-    }
+    console.error('Error during createAnimal:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
+
 
 // delete an animal
 const deleteAnimal = async (req, res) => {
