@@ -22,7 +22,14 @@ export default function Login() {
 
     if (response.ok) {
       console.log('Login successful:', data);
-      navigate('/'); 
+      if (response.ok) {
+        console.log('Login successful:', data);
+        if (data.isAdmin) {
+          navigate('/adminanimalmanagement');
+        } else {
+          navigate('/');
+        }
+      }
     } else {
       setError(data.message || 'Login failed');
       console.error('Login error:', data);
