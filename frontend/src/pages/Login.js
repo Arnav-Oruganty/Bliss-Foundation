@@ -24,7 +24,7 @@ export default function Login() {
       console.log('Login successful:', data);
       if (response.ok) {
         console.log('Login successful:', data);
-        if (data.isAdmin) {
+        if (data.user.isAdmin) {
           navigate('/adminanimalmanagement');
         } else {
           navigate('/');
