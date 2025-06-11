@@ -47,8 +47,9 @@ const createAnimal = async (req, res) => {
 
     res.status(200).json(animal);
   } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+        console.error("Error creating animal:", error); // This will show full error in Render logs
+        res.status(500).json({ error: error.message || "Server error" });
+    }
 };
 
 // delete an animal
