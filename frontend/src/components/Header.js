@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -18,13 +18,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTheme, useMediaQuery } from "@mui/material";
 import logo from "../assets/logo.jpeg";
 
-// Example: get user name from props, context, or localStorage
-const userName = localStorage.getItem("userName") || "Guest";
-
 export default function Header({ onSignOut }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [userName, setUserName] = useState("Guest");
   const navigate = useNavigate();
 
   const navLinks = [
@@ -33,7 +31,36 @@ export default function Header({ onSignOut }) {
     { label: "Donate", icon: <VolunteerActivismIcon />, to: "/donate" },
   ];
 
+  // 🔒 Securely fetch user's name
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const res = await fetch("https://bliss-foundation.onrender.com/api/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setUserName(data.name);
+        } else {
+          setUserName("Guest");
+        }
+      } catch (err) {
+        console.error("Error fetching user info:", err);
+        setUserName("Guest");
+      }
+    };
+
+    fetchUserName();
+  }, []);
+
   const handleSignOut = () => {
+    localStorage.removeItem("token");
     if (onSignOut) onSignOut();
     navigate("/login");
   };
@@ -80,6 +107,7 @@ export default function Header({ onSignOut }) {
           Bliss Foundation
         </Typography>
       </Box>
+
       {isMobile ? (
         <>
           <IconButton onClick={() => setDrawerOpen(true)} sx={{ ml: 1 }}>
@@ -106,12 +134,11 @@ export default function Header({ onSignOut }) {
                     onClick={() => setDrawerOpen(false)}
                     sx={{
                       color: "#6B7280",
-                      "& .MuiSvgIcon-root": { color: "#6B7280" },
                       textDecoration: "none",
                     }}
                   >
                     {item.icon}
-                    <ListItemText primary={item.label} sx={{ ml: 1, color: "#6B7280" }} />
+                    <ListItemText primary={item.label} sx={{ ml: 1 }} />
                   </ListItem>
                 ))}
                 <ListItem button onClick={handleSignOut}>

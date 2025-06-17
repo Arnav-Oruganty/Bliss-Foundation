@@ -96,7 +96,8 @@ export default function AboutUs() {
               fontSize: "1rem",
               "&:hover": {
                 backgroundColor: "#166534"
-              }
+              },
+              mb: 2
             }}
           >
             Back to Home

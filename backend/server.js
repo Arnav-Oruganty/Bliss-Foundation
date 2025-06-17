@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const animalRoutes = require('./routes/animals');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/userRoutes');
 
 const PORT = process.env.PORT || 4000;
 
@@ -13,7 +14,7 @@ const app = express();
 
 // Enable CORS
 app.use(cors({
-  origin: 'https://bliss-foundation.vercel.app', // your frontend domain
+  origin: ['http://localhost:3000', 'https://bliss-foundation.vercel.app'], // your frontend domain
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true // only needed if using cookies/auth headers
 }));
@@ -34,6 +35,8 @@ app.get('/', (req, res) => {
 app.use('/api/animals', animalRoutes);
 
 app.use('/api/auth', authRoutes)
+
+app.use('/api/user', userRoutes);
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)
