@@ -21,14 +21,11 @@ export default function Login() {
     const data = await response.json();
 
     if (response.ok) {
-      console.log('Login successful:', data);
-      if (response.ok) {
-        console.log('Login successful:', data);
-        if (data.user.isAdmin) {
-          navigate('/adminanimalmanagement');
-        } else {
-          navigate('/');
-        }
+      localStorage.setItem("loggedInEmail", JSON.stringify(data.user.email));
+      if (data.user.isAdmin) {
+        navigate('/adminanimalmanagement');
+      } else {
+        navigate('/');
       }
     } else {
       setError(data.message || 'Login failed');

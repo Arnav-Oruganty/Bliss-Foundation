@@ -23,7 +23,29 @@ export default function Header({ onSignOut }) {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [userName, setUserName] = useState("Guest");
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const loggedInEmail = JSON.parse(localStorage.getItem("loggedInEmail"));
+        if (!loggedInEmail) return;
+
+        const response = await fetch("https://bliss-foundation.onrender.com/api/auth/signup");
+        const data = await response.json();
+
+        const user = data.find((u) => u.email === loggedInEmail);
+        if (user) {
+          setUserName(user.name);
+        }
+      } catch (error) {
+        console.error("Error fetching user name:", error);
+      }
+    };
+
+    fetchUserName();
+  }, []);
 
   const navLinks = [
     { label: "About", icon: <InfoIcon />, to: "/about" },
@@ -31,36 +53,8 @@ export default function Header({ onSignOut }) {
     { label: "Donate", icon: <VolunteerActivismIcon />, to: "/donate" },
   ];
 
-  // 🔒 Securely fetch user's name
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      try {
-        const res = await fetch("https://bliss-foundation.onrender.com/api/user/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setUserName(data.name);
-        } else {
-          setUserName("Guest");
-        }
-      } catch (err) {
-        console.error("Error fetching user info:", err);
-        setUserName("Guest");
-      }
-    };
-
-    fetchUserName();
-  }, []);
-
   const handleSignOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("loggedInEmail"); // Optional
     if (onSignOut) onSignOut();
     navigate("/login");
   };
@@ -107,7 +101,6 @@ export default function Header({ onSignOut }) {
           Bliss Foundation
         </Typography>
       </Box>
-
       {isMobile ? (
         <>
           <IconButton onClick={() => setDrawerOpen(true)} sx={{ ml: 1 }}>
