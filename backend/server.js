@@ -6,6 +6,7 @@ const cors = require('cors');
 const animalRoutes = require('./routes/animals');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/userRoutes');
+const adoption = require('./routes/adoption');
 
 const PORT = process.env.PORT || 4000;
 
@@ -37,6 +38,8 @@ app.use('/api/animals', animalRoutes);
 app.use('/api/auth', authRoutes)
 
 app.use('/api/user', userRoutes);
+
+app.use('/api/adoptions', adoption);
 
 // connect to db
 mongoose.connect(process.env.MONGO_URI)

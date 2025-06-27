@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Box, Typography, TextField, Button, Paper } from "@mui/material";
+import { QRCodeSVG } from "qrcode.react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -14,6 +15,8 @@ export default function Donate() {
     setSubmitted(true);
     // Here you can integrate with a payment gateway or backend API
   };
+
+  const upiId = ""; // Replace with your UPI ID
 
   return (
     <Box
@@ -44,9 +47,23 @@ export default function Donate() {
             Your donation helps us rescue, shelter, and care for more animals in need. Thank you for your support!
           </Typography>
           {submitted ? (
-            <Typography sx={{ color: "#15803d", fontWeight: "bold", textAlign: "center" }}>
-              Thank you for your generous donation!
-            </Typography>
+            <>
+              <Typography sx={{ color: "#15803d", fontWeight: "bold", textAlign: "center" }}>
+                Thank you for your generous donation!
+              </Typography>
+              <Box sx={{ textAlign: "center", mt: 4 }}>
+                <Typography sx={{ mb: 2 }}>
+                  Scan this QR code to pay via UPI:
+                </Typography>
+                <QRCodeSVG
+                  value={`upi://pay?pa=${upiId}&pn=${encodeURIComponent('BLISS FOUNDATION')}&am=${amount}&cu=INR&tn=${encodeURIComponent(message)}`}
+                  size={200}
+                />
+                <Typography sx={{ mt: 2, fontSize: "0.9rem" }}>
+                  Or pay to UPI ID: <b>{upiId}</b>
+                </Typography>
+              </Box>
+            </>
           ) : (
             <form onSubmit={handleDonate}>
               <TextField

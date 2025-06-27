@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -16,6 +16,23 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export default function HomePage() {
+  const [shelterCount, setShelterCount] = useState(null);
+
+  useEffect(() => {
+    // Fetch animals and set the count
+    fetch("https://bliss-foundation.onrender.com/api/animals")
+      .then(res => res.json())
+      .then(data => setShelterCount(Array.isArray(data) ? data.length : 0))
+      .catch(() => setShelterCount(0));
+  }, []);
+
+  const impactStats = [
+    { label: "Dogs Rescued", value: 120 },
+    { label: "Dogs Adopted", value: 95 },
+    { label: "Currently in Shelter", value: shelterCount !== null ? shelterCount : "..." },
+    { label: "Fostered", value: 10 }
+  ];
+
   return (
     <Box
       sx={{
@@ -185,12 +202,7 @@ export default function HomePage() {
           </Typography>
 
           <Grid container spacing={4} justifyContent="center">
-            {[
-              { label: "Dogs Rescued", value: 120 },
-              { label: "Dogs Adopted", value: 95 },
-              { label: "Currently in Shelter", value: 15 },
-              { label: "Fostered", value: 10 }
-            ].map((item, index) => (
+            {impactStats.map((item, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <Box
                   sx={{
