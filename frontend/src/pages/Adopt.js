@@ -3,6 +3,8 @@ import { Box, Grid, Typography, TextField, CircularProgress, Dialog, DialogTitle
 import AnimalCard from "../components/AnimalCard";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Adopt() {
     const [animals, setAnimals] = useState([]);
@@ -118,7 +120,21 @@ export default function Adopt() {
 
             {/* Adoption Interest Modal */}
             <Dialog open={open} onClose={() => setOpen(false)}>
-                <DialogTitle>Adopt {selectedAnimal?.name}</DialogTitle>
+                <DialogTitle sx={{ m: 0, p: 2 }}>
+                    Adopt {selectedAnimal?.name}
+                    <IconButton
+                        aria-label="close"
+                        onClick={() => setOpen(false)}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: (theme) => theme.palette.error.main,
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
                 <DialogContent>
                     {submitted ? (
                         <Typography sx={{ color: "#15803d", fontWeight: "bold", mt: 2 }}>
