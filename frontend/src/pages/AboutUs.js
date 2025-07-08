@@ -17,7 +17,7 @@ export default function AboutUs() {
       <Header />
 
       {/* About Us Content */}
-      <Box sx={{ maxWidth: "900px", mx: "auto", mb: 10 }}>
+      <Box sx={{ maxWidth: "900px", mx: "auto", mb: 10, mt: 4 }}>
         <Typography
           variant="h3"
           sx={{ fontWeight: "bold", color: "#15803d", mb: 3, textAlign: "center" }}

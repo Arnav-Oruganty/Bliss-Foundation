@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import { QRCodeSVG } from "qrcode.react";
 import Header from "../components/Header";
@@ -9,14 +9,19 @@ export default function Donate() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [upiId, setUpiId] = useState("");
+
+  useEffect(() => {
+    fetch("/api/upi-id")
+      .then((res) => res.json())
+      .then((data) => setUpiId(data.upiId || ""));
+  }, []);
 
   const handleDonate = (e) => {
     e.preventDefault();
     setSubmitted(true);
     // Here you can integrate with a payment gateway or backend API
   };
-
-  const upiId = ""; // Replace with your UPI ID
 
   return (
     <>
@@ -36,11 +41,18 @@ export default function Donate() {
             Support Bliss Foundation
           </Typography>
           <Typography sx={{ mb: 3, textAlign: "center" }}>
-            Your donation helps us rescue, shelter, and care for more animals in need. Thank you for your support!
+            Your donation helps us rescue, shelter, and care for more animals in
+            need. Thank you for your support!
           </Typography>
           {submitted ? (
             <>
-              <Typography sx={{ color: "#15803d", fontWeight: "bold", textAlign: "center" }}>
+              <Typography
+                sx={{
+                  color: "#15803d",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
                 Thank you for your generous donation!
               </Typography>
               <Box sx={{ textAlign: "center", mt: 4 }}>
@@ -48,7 +60,9 @@ export default function Donate() {
                   Scan this QR code to pay via UPI:
                 </Typography>
                 <QRCodeSVG
-                  value={`upi://pay?pa=${upiId}&pn=${encodeURIComponent('BLISS FOUNDATION')}&am=${amount}&cu=INR&tn=${encodeURIComponent(message)}`}
+                  value={`upi://pay?pa=${upiId}&pn=${encodeURIComponent(
+                    "BLISS FOUNDATION"
+                  )}&am=${amount}&cu=INR&tn=${encodeURIComponent(message)}`}
                   size={200}
                 />
                 <Typography sx={{ mt: 2, fontSize: "0.9rem" }}>
@@ -98,6 +112,7 @@ export default function Donate() {
                   fontSize: "1rem",
                   "&:hover": { backgroundColor: "#166534" },
                 }}
+                disabled={!upiId}
               >
                 Donate Now
               </Button>

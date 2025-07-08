@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 export default function Adopt() {
     const [animals, setAnimals] = useState([]);
@@ -14,6 +15,8 @@ export default function Adopt() {
     const [selectedAnimal, setSelectedAnimal] = useState(null);
     const [userDetails, setUserDetails] = useState({ name: "", email: "", phone: "", message: "" });
     const [submitted, setSubmitted] = useState(false);
+    const [loginPrompt, setLoginPrompt] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchAnimals = async () => {
@@ -36,11 +39,16 @@ export default function Adopt() {
         (animal.location && animal.location.toLowerCase().includes(search.toLowerCase()))
     );
 
+    const isLoggedIn = Boolean(localStorage.getItem("loggedInEmail"));
+
     const handleAdoptClick = (animal) => {
         setSelectedAnimal(animal);
         setOpen(true);
         setSubmitted(false);
         setUserDetails({ name: "", email: "", phone: "", message: "" });
+        if (!isLoggedIn) {
+            setLoginPrompt(true);
+        }
     };
 
     const handleFormSubmit = async (e) => {
@@ -62,7 +70,7 @@ export default function Adopt() {
         <>
             <Header />
 
-            <Box sx={{ maxWidth: "1200px", mx: "auto", mb: 8 }}>
+            <Box sx={{ maxWidth: "1200px", mx: "auto", mt: 4 }}>
                 <Typography
                     variant="h3"
                     sx={{
@@ -128,7 +136,24 @@ export default function Adopt() {
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
-                    {submitted ? (
+                    {loginPrompt ? (
+                        <Box sx={{ textAlign: "center", py: 3 }}>
+                            <Typography sx={{ color: "#d32f2f", fontWeight: "bold", mb: 2 }}>
+                                Please log in to express interest in adoption.
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                sx={{ backgroundColor: "#15803d" }}
+                                onClick={() => {
+                                    setOpen(false);
+                                    setLoginPrompt(false);
+                                    navigate("/login");
+                                }}
+                            >
+                                Login
+                            </Button>
+                        </Box>
+                    ) : submitted ? (
                         <Typography sx={{ color: "#15803d", fontWeight: "bold", mt: 2 }}>
                             Thank you for your interest! Our team will contact you soon.
                         </Typography>

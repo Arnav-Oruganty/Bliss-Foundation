@@ -32,6 +32,10 @@ app.get('/', (req, res) => {
   res.send('Bliss Foundation API is running!');
 });
 
+app.get('/api/upi-id', (req, res) => {
+  res.json({ upiId: process.env.UPI_ID });
+});
+
 // routes
 app.use('/api/animals', animalRoutes);
 
