@@ -6,15 +6,7 @@ import Footer from "../components/Footer";
 
 export default function HowAdoptionWorks() {
   return (
-    <Box
-      sx={{
-        backgroundColor: "white",
-        color: "#4B5563",
-        minHeight: "100vh",
-        px: 4,
-        py: 6,
-      }}
-    >
+    <>
       <Header />
 
       <Box sx={{ maxWidth: 700, mx: "auto", mt: 6, mb: 8 }}>
@@ -96,6 +88,6 @@ export default function HowAdoptionWorks() {
       </Box>
 
       <Footer />
-    </Box>
+    </>
   );
 }
