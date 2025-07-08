@@ -59,15 +59,7 @@ export default function Adopt() {
     };
 
     return (
-        <Box
-            sx={{
-                backgroundColor: "white",
-                color: "#4B5563",
-                minHeight: "100vh",
-                px: 4,
-                py: 6,
-            }}
-        >
+        <>
             <Header />
 
             <Box sx={{ maxWidth: "1200px", mx: "auto", mb: 8 }}>
@@ -189,6 +181,6 @@ export default function Adopt() {
             </Dialog>
 
             <Footer />
-        </Box>
+        </>
     );
 }

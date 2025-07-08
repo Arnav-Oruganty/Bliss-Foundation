@@ -2,7 +2,6 @@ import React from "react";
 import {
   Box,
   Button,
-  Grid,
   Typography,
   List,
   ListItem,
@@ -14,15 +13,7 @@ import Footer from "../components/Footer";
 
 export default function AboutUs() {
   return (
-    <Box
-      sx={{
-        backgroundColor: "white",
-        color: "#4B5563",
-        minHeight: "100vh",
-        px: 4,
-        py: 6
-      }}
-    >
+    <>
       <Header />
 
       {/* About Us Content */}
@@ -106,6 +97,6 @@ export default function AboutUs() {
       </Box>
 
       <Footer />
-    </Box>
+    </>
   );
 }

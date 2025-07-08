@@ -19,15 +19,7 @@ export default function Donate() {
   const upiId = ""; // Replace with your UPI ID
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "white",
-        color: "#4B5563",
-        minHeight: "100vh",
-        px: 4,
-        py: 6,
-      }}
-    >
+    <>
       <Header />
 
       <Box sx={{ maxWidth: 500, mx: "auto", mt: 6, mb: 8 }}>
@@ -115,6 +107,6 @@ export default function Donate() {
       </Box>
 
       <Footer />
-    </Box>
+    </>
   );
 }

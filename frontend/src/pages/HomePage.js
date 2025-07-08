@@ -9,17 +9,37 @@ import {
   Typography
 } from "@mui/material";
 import { Link } from "react-router-dom";
+
 import dog1 from "../assets/dog1.jpg";
 import dog2 from "../assets/dog2.jpg";
 import main from "../assets/main.jpg";
+import main2 from "../assets/main2.jpg";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+
+const sliderImages = [main, main2, dog1, dog2];
+
+const sliderSettings = {
+  dots: false,
+  arrows: false,
+  infinite: true,
+  autoplay: true,
+  speed: 1000,
+  autoplaySpeed: 4000,
+  pauseOnHover: false,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+};
 
 export default function HomePage() {
   const [shelterCount, setShelterCount] = useState(null);
 
   useEffect(() => {
-    // Fetch animals and set the count
     fetch("https://bliss-foundation.onrender.com/api/animals")
       .then(res => res.json())
       .then(data => setShelterCount(Array.isArray(data) ? data.length : 0))
@@ -34,79 +54,79 @@ export default function HomePage() {
   ];
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "white",
-        color: "#4B5563",
-        minHeight: "100vh",
-        px: 4,
-        py: 6
-      }}
-    >
+    <>
       <Header />
 
-      {/* Hero Section */}
-      <Grid
-        container
-        spacing={6}
-        alignItems="center"
-        justifyContent="center"
-        sx={{ maxWidth: "1200px", mx: "auto", mb: 8 }}
-      >
-        <Grid item xs={12} md={6}>
-          <Box
-            component="img"
-            src={main}
-            alt="Happy Pets"
-            sx={{ width: "100%", borderRadius: 4 }}
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <Typography
-              variant="h3"
-              sx={{ fontWeight: "bold", color: "#15803d", mb: 2, textAlign: "center" }}
-            >
-              Find Your New Best Friend
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ fontSize: "1.125rem", color: "#6B7280", mb: 3, textAlign: "center" }}
-            >
-              Search through hundreds of pets and bring home a companion that
-              brings joy to your life.
-            </Typography>
-            <Button
-              component={Link}
-              to="/adopt"
-              variant="contained"
+      {/* Slider */}
+      <Box sx={{ width: "100%", height: "100vh" }}>
+        <Slider {...sliderSettings}>
+          {sliderImages.map((img, idx) => (
+            <Box
+              key={idx}
               sx={{
-                backgroundColor: "#15803d",
-                color: "white",
-                px: 5,
-                py: 1.75,
-                borderRadius: "9999px",
-                fontSize: "1rem",
-                "&:hover": {
-                  backgroundColor: "#166534"
-                }
+                height: "100vh",
+                width: "100vw",
+                backgroundImage: `url(${img})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
               }}
-            >
-              View Available Pets
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
+            />
+          ))}
+        </Slider>
+      </Box>
 
-      {/* Main Container for Cards and Dashboard */}
-      <Box sx={{ maxWidth: "1200px", mx: "auto", px: 2 }}>
-        {/* Info Cards Section */}
-        <Grid 
-          container 
-          spacing={4}
-          justifyContent="center"
-          alignItems="stretch"
+      {/* Call to Action Box */}
+      <Box
+        sx={{
+          background: "rgba(255,255,255,0.85)",
+          borderRadius: 4,
+          px: 4,
+          py: 6,
+          boxShadow: 3,
+          textAlign: "center",
+          maxWidth: 600,
+          mx: "auto",
+          mt: 4,
+          zIndex: 1,
+          position: "relative"
+        }}
+      >
+        <Typography
+          variant="h3"
+          sx={{ fontWeight: "bold", color: "#15803d", mb: 2 }}
         >
+          Find Your New Best Friend
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{ fontSize: "1.125rem", color: "#6B7280", mb: 3 }}
+        >
+          Search through hundreds of pets and bring home a companion that brings joy to your life.
+        </Typography>
+        <Button
+          component={Link}
+          to="/adopt"
+          variant="contained"
+          sx={{
+            backgroundColor: "#15803d",
+            color: "white",
+            px: 5,
+            py: 1.75,
+            borderRadius: "9999px",
+            fontSize: "1rem",
+            "&:hover": {
+              backgroundColor: "#166534"
+            }
+          }}
+        >
+          View Available Pets
+        </Button>
+      </Box>
+
+      {/* Main Content Container */}
+      <Box sx={{ maxWidth: "1200px", mx: "auto", px: 2, py: 4 }}>
+        {/* Info Cards */}
+        <Grid container spacing={4} justifyContent="center" alignItems="stretch">
           <Grid item xs={12} md={6}>
             <Link to="/adopt" style={{ textDecoration: "none", display: "block", height: "100%" }}>
               <Card
@@ -127,11 +147,7 @@ export default function HomePage() {
                   height="240"
                   image={dog1}
                   alt="Search"
-                  sx={{
-                    borderTopLeftRadius: 12,
-                    borderTopRightRadius: 12,
-                    objectFit: "cover"
-                  }}
+                  sx={{ objectFit: "cover" }}
                 />
                 <CardContent>
                   <Typography
@@ -141,8 +157,7 @@ export default function HomePage() {
                     Easy Search
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Quickly filter pets by location, age, breed, and more to find
-                    your perfect match.
+                    Quickly filter pets by location, age, breed, and more to find your perfect match.
                   </Typography>
                 </CardContent>
               </Card>
@@ -178,8 +193,7 @@ export default function HomePage() {
                     How Adoption Works
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Learn more about the adoption process and how we help pets
-                    find loving homes.
+                    Learn more about the adoption process and how we help pets find loving homes.
                   </Typography>
                 </CardContent>
               </Card>
@@ -187,16 +201,11 @@ export default function HomePage() {
           </Grid>
         </Grid>
 
-        {/* Dashboard Section */}
+        {/* Impact Stats */}
         <Box sx={{ width: "100%", mt: 8, mb: 6 }}>
           <Typography
             variant="h5"
-            sx={{
-              color: "#15803d",
-              fontWeight: "bold",
-              textAlign: "center",
-              mb: 4
-            }}
+            sx={{ color: "#15803d", fontWeight: "bold", textAlign: "center", mb: 4 }}
           >
             Our Impact
           </Typography>
@@ -224,10 +233,7 @@ export default function HomePage() {
                   >
                     {item.value}
                   </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{ color: "#4B5563" }}
-                  >
+                  <Typography variant="subtitle1" sx={{ color: "#4B5563" }}>
                     {item.label}
                   </Typography>
                 </Box>
@@ -238,6 +244,6 @@ export default function HomePage() {
       </Box>
 
       <Footer />
-    </Box>
+    </>
   );
 }

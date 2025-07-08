@@ -6,6 +6,7 @@ import Donate from "./pages/Donate";
 import HowAdoptionWorks from "./pages/HowAdoptionWorks";
 import Login from "./pages/Login";
 import AdminAnimalManagement from "./pages/AdminAnimalManagement";
+import Signup from "./pages/SignUp";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/how-adoption-works" element={<HowAdoptionWorks />} />
         <Route path="/login" element={<Login />} />
         <Route path="/adminanimalmanagement" element={<AdminAnimalManagement />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>
   );

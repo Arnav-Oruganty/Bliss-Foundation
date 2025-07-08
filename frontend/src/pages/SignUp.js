@@ -1,8 +1,9 @@
-import { Box, Typography, TextField, Button, Paper, Link as MuiLink } from "@mui/material";
+import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Signup() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -11,26 +12,22 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('https://bliss-foundation.onrender.com/api/auth/login', {
+    setError(null);
+    const response = await fetch('https://bliss-foundation.onrender.com/api/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ name, email, password }),
     });
     const data = await response.json();
 
     if (response.ok) {
-      localStorage.setItem("loggedInEmail", JSON.stringify(data.user.email));
-      localStorage.setItem("loggedInName", data.user.name);
-      if (data.user.isAdmin) {
-        navigate('/adminanimalmanagement');
-      } else {
-        navigate('/');
-      }
+      // Optionally, log in the user or redirect to login
+      navigate('/login');
     } else {
-      setError(data.message || 'Login failed');
-      console.error('Login error:', data);
+      setError(data.message || 'Signup failed');
+      console.error('Signup error:', data);
     }
   };
 
@@ -55,12 +52,21 @@ export default function Login() {
               textAlign: "center",
             }}
           >
-            Sign In to Bliss Foundation
+            Create Your Account
           </Typography>
           <Typography sx={{ mb: 3, textAlign: "center" }}>
-            Welcome back! Please sign in to continue.
+            Join Bliss Foundation and help us make a difference!
           </Typography>
           <form onSubmit={handleSubmit}>
+            <TextField
+              label="Name"
+              type="text"
+              fullWidth
+              required
+              sx={{ mb: 2 }}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
             <TextField
               label="Email"
               type="email"
@@ -98,15 +104,9 @@ export default function Login() {
                 "&:hover": { backgroundColor: "#166534" },
               }}
             >
-              Sign In
+              Sign Up
             </Button>
           </form>
-          <Typography sx={{ mt: 2, textAlign: "center" }}>
-            Not registered?{" "}
-            <MuiLink component={Link} to="/signup" sx={{ color: "#15803d", fontWeight: "bold", textDecoration: "underline", cursor: "pointer" }}>
-              Sign up
-            </MuiLink>
-          </Typography>
         </Paper>
       </Box>
     </Box>
