@@ -27,7 +27,7 @@ const getAnimal = async (req, res) => {
 
 // create new animal
 const createAnimal = async (req, res) => {
-  const { name, species, age, location, healthStatus = 'Healthy' } = req.body;
+  const { name, species, breed, age, location, healthStatus = 'Healthy' } = req.body;
 
   if (!name || !species || !age || !location || !req.file) {
     return res.status(400).json({ error: 'All fields including image are required' });
@@ -45,6 +45,7 @@ const createAnimal = async (req, res) => {
     const animal = await Animal.create({
       name,
       species,
+      breed,
       age,
       location,
       healthStatus,

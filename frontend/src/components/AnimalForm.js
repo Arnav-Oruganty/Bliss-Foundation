@@ -11,6 +11,7 @@ import {
 const initialState = {
   name: "",
   species: "",
+  breed: "",
   age: "",
   healthStatus: "Healthy",
   location: "",
@@ -38,7 +39,7 @@ const AnimalForm = ({ onAnimalAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted"); // ✅ Debug log
+    console.log("Form submitted");
 
     const data = new FormData();
     Object.entries(form).forEach(([key, value]) => data.append(key, value));
@@ -75,7 +76,7 @@ const AnimalForm = ({ onAnimalAdded }) => {
     <Paper sx={{ p: 3 }}>
       <Typography
         variant="h6"
-        sx={{ fontWeight: "bold", color: "#09bcd4", mb: 2 }}
+        sx={{ fontWeight: "bold", color: "#15803d", mb: 2 }}
       >
         Add New Animal
       </Typography>
@@ -97,6 +98,14 @@ const AnimalForm = ({ onAnimalAdded }) => {
             onChange={handleChange}
             required
             error={emptyFields.includes("species")}
+          />
+          <TextField
+            label="Breed"
+            name="breed"
+            value={form.breed}
+            onChange={handleChange}
+            required
+            error={emptyFields.includes("breed")}
           />
           <TextField
             label="Age"
@@ -147,12 +156,12 @@ const AnimalForm = ({ onAnimalAdded }) => {
             type="submit"
             variant="contained"
             sx={{
-              background: "#09bcd4",
+              background: "#15803d",
               color: "#fff",
               fontWeight: "bold",
               borderRadius: "9999px",
               mt: 1,
-              "&:hover": { background: "#007c91" },
+              "&:hover": { background: "#166534" },
             }}
           >
             Add Animal

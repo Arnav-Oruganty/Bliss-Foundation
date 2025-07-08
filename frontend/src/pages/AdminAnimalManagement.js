@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import AnimalCard from "../components/AnimalCard";
 import AnimalForm from "../components/AnimalForm";
-import Header from "../components/Header";
+import AdminHeader from "../components/AdminHeader";
 import Footer from "../components/Footer";
 
 export default function AdminAnimalManagement() {
@@ -28,19 +28,31 @@ export default function AdminAnimalManagement() {
             .then((json) => setAnimals(json));
     };
 
-    return (
-        <Box
-            sx={{
-                backgroundColor: "white",
-                color: "#4B5563",
-                minHeight: "100vh",
-                px: 4,
-                py: 6,
-            }}
-        >
-            <Header />
+    const handleDeleteAnimal = async (id) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this animal?");
+        if (!confirmDelete) return;
 
-            <Box sx={{ maxWidth: "1200px", mx: "auto", mb: 8 }}>
+        try {
+            const response = await fetch(`https://bliss-foundation.onrender.com/api/animals/${id}`, {
+            method: "DELETE"
+            });
+
+            if (response.ok) {
+            setAnimals((prev) => prev.filter((animal) => animal._id !== id));
+            } else {
+            alert("Failed to delete animal.");
+            }
+        } catch (error) {
+            console.error("Delete error:", error);
+            alert("Something went wrong while deleting.");
+        }
+    };
+
+    return (
+        <>
+            <AdminHeader />
+
+            <Box sx={{ maxWidth: "1200px", mx: "auto", mb: 8, mt: 4 }}>
                 <Typography
                     variant="h3"
                     sx={{
@@ -50,8 +62,13 @@ export default function AdminAnimalManagement() {
                         textAlign: "center",
                     }}
                 >
-                    Animals Available for Adoption
+                    Add New Animals for Adoption
                 </Typography>
+
+                <Box sx={{ mt: 6, mb: 8, maxWidth: 500, mx: "auto" }}>
+                    <AnimalForm onAnimalAdded={handleAnimalAdded} />
+                </Box>
+
                 <Grid container spacing={4} justifyContent="center">
                     {animals.map((animal) => (
                         <Grid item key={animal._id} xs={12} sm={6} md={4}>
@@ -62,20 +79,15 @@ export default function AdminAnimalManagement() {
                                 location={animal.location}
                                 breed={animal.breed}
                                 age={animal.age}
-                                onAdopt={() =>
-                                    alert(`Thank you for choosing to adopt ${animal.name}!`)
-                                }
+                                showAdoptButton={false}
+                                onDelete={() => handleDeleteAnimal(animal._id)} 
                             />
                         </Grid>
                     ))}
                 </Grid>
-                {/* AnimalForm for adding new animals */}
-                <Box sx={{ mt: 6, maxWidth: 500, mx: "auto" }}>
-                    <AnimalForm onAnimalAdded={handleAnimalAdded} />
-                </Box>
             </Box>
 
             <Footer />
-        </Box>
+        </>
     );
 }
